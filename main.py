@@ -39,6 +39,30 @@ class Serpent:
     def test(self):
         self.body.printList()
 
-snake = Serpent(LinkedList, Node)
-snake.createSegment((0,1), 1)
-snake.test()
+def update():
+    pass
+
+def draw():
+    pyxel.cls(0)
+    test.drawWindowPlay()
+
+class Jeu:
+    def __init__(self, dimensions):
+        self.dimensions = dimensions
+
+    def initGame(self):
+        pyxel.init(self.dimensions[0], self.dimensions[1])
+        pyxel.load("snake.pyxres")
+
+    def startGame(self):
+        pyxel.run(update, draw)
+
+    def drawWindowPlay(self):
+        pyxel.bltm(0,0,0,0,0,256,256)
+
+test= Jeu((256,256))
+test.initGame()
+test.startGame()
+
+
+
