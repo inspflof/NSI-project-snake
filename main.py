@@ -1,4 +1,6 @@
 import pyxel
+import random
+import time
 
 class Node:
     def __init__(self, data):
