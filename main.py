@@ -20,6 +20,14 @@ class LinkedList:
             last = last.next
         last.next = new_node  # Make the new node the next node of the last node
 
+    def returnPositionList(self):
+        list = []
+        temp = self.head
+        while temp:
+            list.append(temp.position)
+            temp = temp.next
+        return list
+
     def printList(self):
         temp = self.head # Start from the head of the list
         while temp:
@@ -39,12 +47,13 @@ class Serpent:
     def test(self):
         self.body.printList()
 
-def update():
-    pass
-
-def draw():
-    pyxel.cls(0)
-    test.drawWindowPlay()
+class Fruit:
+    def __init__(self, bodyList) -> None:
+        self.position = None
+        while not self.position:
+            tempPos = (random.randint(1,254), random.randint(1,254))
+            if(not (tempPos in bodyList.returnPositionList())):
+                self.position = tempPos
 
 class Jeu:
     def __init__(self, dimensions):
@@ -55,14 +64,13 @@ class Jeu:
         pyxel.load("snake.pyxres")
 
     def startGame(self):
-        pyxel.run(update, draw)
+        pyxel.run(self.update, self.draw)
 
     def drawWindowPlay(self):
         pyxel.bltm(0,0,0,0,0,256,256)
 
-test= Jeu((256,256))
-test.initGame()
-test.startGame()
+    def update(self):
+        pass
 
-
-
+    def draw(self):
+        pyxel.cls(0)
