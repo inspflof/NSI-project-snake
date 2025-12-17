@@ -2,6 +2,81 @@ import pyxel
 import random
 import time
 
+width = 128
+height = 128
+
+
+
+
+pyxel.init(width, height, title="SNAKE", fps=60, display_scale=None)
+
+
+
+
+def init():
+    global x_carre, y_carre
+    x_carre = 60
+    y_carre = 60
+    pyxel.run(update, draw)
+
+
+
+
+def detection_collision(x, y):
+    if x >= 120 or x< 3 or y >= 118 or y < 4:
+        return True
+    return False 
+            
+
+
+  
+
+
+    
+
+def update():
+    global x_carre, y_carre
+    x_carre, y_carre = deplacement_carre(x_carre, y_carre)
+    if detection_collision(x_carre, y_carre):
+        x_carre, y_carre = 60, 60 
+
+
+       
+
+def draw():
+    pyxel.cls(1)
+    pyxel.rect(x_carre, y_carre, 8, 8, 13)
+    pyxel.rect(0, 125, 160, 3, 5)
+    pyxel.rect(0, 0, 160, 3, 5)
+    pyxel.rect(0, 0, 3, 160, 5)
+    pyxel.rect(125,0,3,160,5)
+        
+
+
+
+
+
+def deplacement_carre(x, y):
+    
+   if pyxel.btn(pyxel.KEY_UP):
+      if y > 0:
+         y = y - 1
+   if pyxel.btn(pyxel.KEY_DOWN):
+      if y < 120:
+         y = y + 1
+   if pyxel.btn(pyxel.KEY_LEFT):
+      if x > 0:
+         x = x - 1
+   if pyxel.btn(pyxel.KEY_RIGHT):
+      if x < 120:
+         x = x + 1
+   return x, y
+
+
+
+
+
+
 class Node:
     def __init__(self, position, direction):
         self.next = None
@@ -84,7 +159,6 @@ class Jeu:
 
     def initGame(self):
         pyxel.init(self.dimensions[0], self.dimensions[1])
-        pyxel.load("snake.pyxres")
         self.snake = snake
 
     def startGame(self):
@@ -129,3 +203,4 @@ class Jeu:
 
     def draw(self):
         pyxel.cls(0)
+init()
