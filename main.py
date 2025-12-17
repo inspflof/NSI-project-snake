@@ -2,8 +2,8 @@ import pyxel
 import random
 import time
 
-width = 128
-height = 128
+width = 256
+height = 256
 
 
 
@@ -12,21 +12,18 @@ pyxel.init(width, height, title="SNAKE", fps=60, display_scale=None)
 
 
 
+def detection_collision(serpent):
+    head_x, head_y = serpent.body.returnPositionList()[0] 
 
-def init():
-    global x_carre, y_carre
-    x_carre = 60
-    y_carre = 60
-    pyxel.run(update, draw)
-
-
-
-
-def detection_collision(x, y):
-    if x >= 120 or x< 3 or y >= 118 or y < 4:
+    if head_x < 0 or head_x >= width or head_y < 0 or head_y >= height:
         return True
-    return False 
-            
+
+    body_positions = serpent.body.returnPositionList()[1:]  
+    if (head_x, head_y) in body_positions:
+        return True
+
+    return False
+
 
 
   
@@ -35,10 +32,12 @@ def detection_collision(x, y):
     
 
 def update():
-    global x_carre, y_carre
-    x_carre, y_carre = deplacement_carre(x_carre, y_carre)
-    if detection_collision(x_carre, y_carre):
-        x_carre, y_carre = 60, 60 
+   head_x, head_y = deplacement_carre(*serpent.body.returnPositionList()[0])
+   serpent.body.head.position = (head_x, head_y)
+
+   if detection_collision(serpent):
+      serpent = Serpent(LinkedList, Node)  
+
 
 
        
@@ -51,30 +50,6 @@ def draw():
     pyxel.rect(0, 0, 3, 160, 5)
     pyxel.rect(125,0,3,160,5)
         
-
-
-
-
-
-def deplacement_carre(x, y):
-    
-   if pyxel.btn(pyxel.KEY_UP):
-      if y > 0:
-         y = y - 1
-   if pyxel.btn(pyxel.KEY_DOWN):
-      if y < 120:
-         y = y + 1
-   if pyxel.btn(pyxel.KEY_LEFT):
-      if x > 0:
-         x = x - 1
-   if pyxel.btn(pyxel.KEY_RIGHT):
-      if x < 120:
-         x = x + 1
-   return x, y
-
-
-
-
 
 
 class Node:
@@ -117,6 +92,8 @@ class LinkedList:
             print(temp.position, temp.direction,end=' | ') # Print the data in the current node
             temp = temp.next # Move to the next node
         print()  # Ensures the output is followed by a new line
+
+
 
 class Serpent:
     def __init__(self, bodyClass, nodeClass):
@@ -169,6 +146,8 @@ class Serpent:
         snakePosition = self.body.returnPositionList()
         for i in range(len(snakePosition)):
             pyxel.rect(snakePosition[i][0], snakePosition[i][1], 10, 10, 13)
+
+
 
 class Fruit:
     def __init__(self, serpent):
