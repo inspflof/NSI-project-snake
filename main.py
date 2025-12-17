@@ -203,4 +203,3 @@ class Jeu:
 
     def draw(self):
         pyxel.cls(0)
-init()
