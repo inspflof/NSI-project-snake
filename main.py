@@ -71,11 +71,11 @@ class Serpent:
             pyxel.rect(snakePosition[i][0], snakePosition[i][1], 10, 10, 13)
 
 class Fruit:
-    def __init__(self, bodyList) -> None:
+    def __init__(self, serpent):
         self.position = None
         while not self.position:
             tempPos = (random.randint(1,254), random.randint(1,254))
-            if(not (tempPos in bodyList.returnPositionList())):
+            if(not (tempPos in serpent.body.returnPositionList())):
                 self.position = tempPos
 
 class Jeu:
