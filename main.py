@@ -84,7 +84,7 @@ class Node:
         self.direction = direction
 
 class LinkedList:
-    def __init__(self, nodeClass, initPosition=(20,20), initDirection=(0)):
+    def __init__(self, nodeClass, initPosition=(20,20), initDirection=0):
         self.head = nodeClass(initPosition, initDirection)
         self.node = nodeClass
 
@@ -137,6 +137,31 @@ class Serpent:
             case 3:
                 self.body.insertAtEnd((lastPos[0] - 10, lastPos[1]), lastDir)
 
+    def changeDirPosHead(self, newDirection):
+        self.body.head.direction = newDirection
+        match newDirection:
+            case 0:
+                self.body.head.position = (self.body.head.position[0], self.body.head.position[1] + 10)
+            case 1:
+                self.body.head.position = (self.body.head.position[0] + 10, self.body.head.position[1])
+            case 2:
+                self.body.head.position = (self.body.head.position[0], self.body.head.position[1] - 10)
+            case 3:
+                self.body.head.position = (self.body.head.position[0] - 10, self.body.head.position[1])
+
+    def updateBodyPosition(self):
+        temp = self.body.head.next  # Start from the second segment, not the head
+        prev_position = self.body.head.position  # Store the head's position
+        prev_direction = self.body.head.direction  # Store the head's direction
+        while temp:
+            current_position = temp.position  # Store the current segment's position
+            current_direction = temp.direction  # Store the current segment's direction
+            temp.position = prev_position  # Update the current segment's position to the previous segment's position
+            temp.direction = prev_direction  # Update the current segment's direction to the previous segment's direction
+            prev_position = current_position  # Update the previous position for the next segment
+            prev_direction = current_direction  # Update the previous direction for the next segment
+            temp = temp.next
+
     def test(self):
         self.body.printList()
 
@@ -167,39 +192,30 @@ class Jeu:
     def drawWindowPlay(self):
         pyxel.bltm(0,0,0,0,0,256,256)
 
-    def update(self,bodyClass):
-        if self.detection_collision():
-            self.x_carre=60
-            self.y_carre=60
-        
-        self.x_carre,self.y_carre=self.deplacement_carre(self.x_carre,self.y_carre)
-
-
-
-    def deplacement(self):
-        if pyxel.btn(pyxel.KEY_RIGHT) :
-            
-            self.x_carre += 1
-        if pyxel.btn(pyxel.KEY_LEFT) :
-            if self.x>0:
-                self.x_carre += -1
-        if  pyxel.btn(pyxel.KEY_UP):
-            if self.y>0:
-                self.y-=1
-        
-        if pyxel.btn(pyxel.KEY_DOWN):
-            if self.y<120:
-                self.y+=1
-
-    def detection_collision(self):
-        if Fruit.position[0]<self.x_carre<Fruit.position[0]+8:
-            if  Fruit.position[1]<self.y_carre<Fruit.position[1]+8:
-                return True
-          
-        return False
-        
-
-        
+    def update(self):
+        self.deplacements()
+        snake.updateBodyPosition()
+        time.sleep(0.1)
 
     def draw(self):
         pyxel.cls(0)
+        self.drawWindowPlay()
+        self.snake.drawSnake()
+
+    def deplacements(self):
+        if pyxel.btn(pyxel.KEY_UP):
+            self.snake.changeDirPosHead(2)
+        if pyxel.btn(pyxel.KEY_RIGHT):
+            self.snake.changeDirPosHead(1)
+        if pyxel.btn(pyxel.KEY_DOWN):
+            self.snake.changeDirPosHead(0)
+        if pyxel.btn(pyxel.KEY_LEFT):
+            self.snake.changeDirPosHead(3)
+
+
+snake = Serpent(LinkedList, Node)
+snake.createSegment()
+snake.createSegment()
+test = Jeu(snake=snake)
+test.startGame()
+
