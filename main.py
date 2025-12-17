@@ -179,11 +179,8 @@ class Fruit:
                 self.position = tempPos
 
 class Jeu:
-    def __init__(self, dimensions):
-        self.dimensions = dimensions
-
-    def initGame(self):
-        pyxel.init(self.dimensions[0], self.dimensions[1])
+    def __init__(self, snake, dimensions=(256,256)):
+        pyxel.init(dimensions[0], dimensions[1])
         self.snake = snake
 
     def startGame(self):
