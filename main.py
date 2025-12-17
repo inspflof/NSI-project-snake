@@ -27,6 +27,14 @@ class LinkedList:
             list.append(temp.position)
             temp = temp.next
         return list
+    
+    def returnDirectionList(self):
+        list = []
+        temp = self.head
+        while temp:
+            list.append(temp.direction)
+            temp = temp.next
+        return list
 
     def printList(self):
         temp = self.head # Start from the head of the list
@@ -41,8 +49,18 @@ class Serpent:
         self.nodeClass = nodeClass
         self.body = self.bodyClass(self.nodeClass)
 
-    def createSegment(self, position, direction):
-        self.body.insertAtEnd(position, direction)
+    def createSegment(self):
+        lastPos = self.body.returnPositionList()[-1]
+        lastDir = self.body.returnDirectionList()[-1]
+        match self.body.returnDirectionList()[0]:
+            case 0:
+                self.body.insertAtEnd((lastPos[0], lastPos[1] + 10), lastDir)
+            case 1:
+                self.body.insertAtEnd((lastPos[0] + 10, lastPos[1]), lastDir)
+            case 2: 
+                self.body.insertAtEnd((lastPos[0], lastPos[1] -10), lastDir)
+            case 3:
+                self.body.insertAtEnd((lastPos[0] - 10, lastPos[1]), lastDir)
 
     def test(self):
         self.body.printList()
@@ -81,6 +99,7 @@ class Jeu:
         self.snake.drawSnake()
 
 snake = Serpent(LinkedList, Node)
+snake.createSegment()
 test = Jeu(snake=snake)
 test.startGame()
 
