@@ -9,7 +9,7 @@ class Node:
         self.direction = direction
 
 class LinkedList:
-    def __init__(self, nodeClass, initPosition=(0,0), initDirection=(0)):
+    def __init__(self, nodeClass, initPosition=(20,20), initDirection=(0)):
         self.head = nodeClass(initPosition, initDirection)
         self.node = nodeClass
 
@@ -47,6 +47,11 @@ class Serpent:
     def test(self):
         self.body.printList()
 
+    def drawSnake(self):
+        snakePosition = self.body.returnPositionList()
+        for i in range(len(snakePosition)):
+            pyxel.rect(snakePosition[i][0], snakePosition[i][1], 10, 10, 13)
+
 class Fruit:
     def __init__(self, bodyList) -> None:
         self.position = None
@@ -56,9 +61,10 @@ class Fruit:
                 self.position = tempPos
 
 class Jeu:
-    def __init__(self, dimensions=(256,256)):
+    def __init__(self, snake, dimensions=(256,256)):
         pyxel.init(dimensions[0], dimensions[1])
         pyxel.load("snake.pyxres")
+        self.snake = snake
 
     def startGame(self):
         pyxel.run(self.update, self.draw)
@@ -71,6 +77,10 @@ class Jeu:
 
     def draw(self):
         pyxel.cls(0)
+        self.drawWindowPlay()
+        self.snake.drawSnake()
 
-test = Jeu()
+snake = Serpent(LinkedList, Node)
+test = Jeu(snake=snake)
 test.startGame()
+
