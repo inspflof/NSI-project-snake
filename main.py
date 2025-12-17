@@ -58,6 +58,8 @@ class Fruit:
 class Jeu:
     def __init__(self, dimensions):
         self.dimensions = dimensions
+        self.x_carre=60
+        self.y_carre=60
 
     def initGame(self):
         pyxel.init(self.dimensions[0], self.dimensions[1])
@@ -69,8 +71,43 @@ class Jeu:
     def drawWindowPlay(self):
         pyxel.bltm(0,0,0,0,0,256,256)
 
-    def update(self):
-        pass
+    def update(self,bodyClass):
+        if self.detection_collision():
+            self.x_carre=60
+            self.y_carre=60
+        
+        self.x_carre,self.y_carre=self.deplacement_carre(self.x_carre,self.y_carre)
+
+
+
+    def deplacement(self):
+        if pyxel.btn(pyxel.KEY_RIGHT) :
+            
+            self.x_carre += 1
+        if pyxel.btn(pyxel.KEY_LEFT) :
+            if self.x>0:
+                self.x_carre += -1
+        if  pyxel.btn(pyxel.KEY_UP):
+            if self.y>0:
+                self.y-=1
+        
+        if pyxel.btn(pyxel.KEY_DOWN):
+            if self.y<120:
+                self.y+=1
+
+    def detection_collision(self):
+        if Fruit.position[0]<self.x_carre<Fruit.position[0]+8:
+            if  Fruit.position[1]<self.y_carre<Fruit.position[1]+8:
+                return True
+          
+        return False
+        
+
+        
 
     def draw(self):
         pyxel.cls(0)
+
+
+
+c= Jeu((256,256))
