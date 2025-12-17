@@ -56,11 +56,8 @@ class Fruit:
                 self.position = tempPos
 
 class Jeu:
-    def __init__(self, dimensions):
-        self.dimensions = dimensions
-
-    def initGame(self):
-        pyxel.init(self.dimensions[0], self.dimensions[1])
+    def __init__(self, dimensions=(256,256)):
+        pyxel.init(dimensions[0], dimensions[1])
         pyxel.load("snake.pyxres")
 
     def startGame(self):
@@ -74,3 +71,6 @@ class Jeu:
 
     def draw(self):
         pyxel.cls(0)
+
+test = Jeu()
+test.startGame()
