@@ -2,6 +2,56 @@ import pyxel
 import random
 import time
 
+width = 256
+height = 256
+
+
+
+
+pyxel.init(width, height, title="SNAKE", fps=60, display_scale=None)
+
+
+
+def detection_collision(serpent):
+    head_x, head_y = serpent.body.returnPositionList()[0] 
+
+    if head_x < 0 or head_x >= width or head_y < 0 or head_y >= height:
+        return True
+
+    body_positions = serpent.body.returnPositionList()[1:]  
+    if (head_x, head_y) in body_positions:
+        return True
+
+    return False
+
+
+
+  
+
+
+    
+
+def update():
+   head_x, head_y = deplacement_carre(*serpent.body.returnPositionList()[0])
+   serpent.body.head.position = (head_x, head_y)
+
+   if detection_collision(serpent):
+      serpent = Serpent(LinkedList, Node)  
+
+
+
+       
+
+def draw():
+    pyxel.cls(1)
+    pyxel.rect(x_carre, y_carre, 8, 8, 13)
+    pyxel.rect(0, 125, 160, 3, 5)
+    pyxel.rect(0, 0, 160, 3, 5)
+    pyxel.rect(0, 0, 3, 160, 5)
+    pyxel.rect(125,0,3,160,5)
+        
+
+
 class Node:
     def __init__(self, position, direction):
         self.next = None
@@ -9,7 +59,7 @@ class Node:
         self.direction = direction
 
 class LinkedList:
-    def __init__(self, nodeClass, initPosition=(20,20), initDirection=(0)):
+    def __init__(self, nodeClass, initPosition=(20,20), initDirection=0):
         self.head = nodeClass(initPosition, initDirection)
         self.node = nodeClass
 
@@ -43,6 +93,8 @@ class LinkedList:
             temp = temp.next # Move to the next node
         print()  # Ensures the output is followed by a new line
 
+
+
 class Serpent:
     def __init__(self, bodyClass, nodeClass):
         self.bodyClass = bodyClass
@@ -62,6 +114,31 @@ class Serpent:
             case 3:
                 self.body.insertAtEnd((lastPos[0] - 10, lastPos[1]), lastDir)
 
+    def changeDirPosHead(self, newDirection):
+        self.body.head.direction = newDirection
+        match newDirection:
+            case 0:
+                self.body.head.position = (self.body.head.position[0], self.body.head.position[1] + 10)
+            case 1:
+                self.body.head.position = (self.body.head.position[0] + 10, self.body.head.position[1])
+            case 2:
+                self.body.head.position = (self.body.head.position[0], self.body.head.position[1] - 10)
+            case 3:
+                self.body.head.position = (self.body.head.position[0] - 10, self.body.head.position[1])
+
+    def updateBodyPosition(self):
+        temp = self.body.head.next  # Start from the second segment, not the head
+        prev_position = self.body.head.position  # Store the head's position
+        prev_direction = self.body.head.direction  # Store the head's direction
+        while temp:
+            current_position = temp.position  # Store the current segment's position
+            current_direction = temp.direction  # Store the current segment's direction
+            temp.position = prev_position  # Update the current segment's position to the previous segment's position
+            temp.direction = prev_direction  # Update the current segment's direction to the previous segment's direction
+            prev_position = current_position  # Update the previous position for the next segment
+            prev_direction = current_direction  # Update the previous direction for the next segment
+            temp = temp.next
+
     def test(self):
         self.body.printList()
 
@@ -69,6 +146,8 @@ class Serpent:
         snakePosition = self.body.returnPositionList()
         for i in range(len(snakePosition)):
             pyxel.rect(snakePosition[i][0], snakePosition[i][1], 10, 10, 13)
+
+
 
 class Fruit:
     def __init__(self, serpent):
@@ -81,14 +160,11 @@ class Fruit:
 class Jeu:
     def __init__(self, dimensions):
         self.dimensions = dimensions
-        
+
     def initGame(self):
         pyxel.init(self.dimensions[0], self.dimensions[1])
         pyxel.load("snake.pyxres")
-        self.snake =Serpent(LinkedList,Node)
-        self.fruit=Fruit(self.snake)
-
-        
+        self.snake = snake
 
     def startGame(self):
         pyxel.run(self.update, self.draw)
@@ -96,35 +172,33 @@ class Jeu:
     def drawWindowPlay(self):
         pyxel.bltm(0,0,0,0,0,256,256)
 
-    def update(self):
+    def update(self,bodyClass):
         if self.detection_collision():
-            self.snake.body.head.position[0]=60
-            self.snake.body.head.position[1]=60
+            self.x_carre=60
+            self.y_carre=60
         
-        self.snake.body.head.position=self.deplacement()
+        self.x_carre,self.y_carre=self.deplacement_carre(self.x_carre,self.y_carre)
 
 
 
     def deplacement(self):
         if pyxel.btn(pyxel.KEY_RIGHT) :
-            if self.snake.body.head.position[0]<120:
-                self.snake.body.head.position[0] += 1
+            
+            self.x_carre += 1
         if pyxel.btn(pyxel.KEY_LEFT) :
-            if self.snake.body.head.position[0]>0:
-                self.snake.body.head.position[0]+= -1
+            if self.x>0:
+                self.x_carre += -1
         if  pyxel.btn(pyxel.KEY_UP):
-            if self.snake.body.head.position[1]>0:
-                self.snake.body.head.position[1]-=1
+            if self.y>0:
+                self.y-=1
         
         if pyxel.btn(pyxel.KEY_DOWN):
-            if self.snake.body.head.position[0]<120:
-                self.snake.body.head.position[0]+=1
-        x,y=self.snake.body.head.position
-        return x,y
+            if self.y<120:
+                self.y+=1
 
     def detection_collision(self):
-        if self.fruit.position[0]<self.snake.body.head.position[0]<self.fruit.position[0]+8:
-            if  self.fruit.position[1]<self.snake.body.head.position[1]<self.fruit.position[1]+8:
+        if Fruit.position[0]<self.x_carre<Fruit.position[0]+8:
+            if  Fruit.position[1]<self.y_carre<Fruit.position[1]+8:
                 return True
           
         return False
@@ -134,9 +208,6 @@ class Jeu:
 
     def draw(self):
         pyxel.cls(0)
-        pyxel.rect(self.fruit.position[0],self.fruit.position[1],8,8,9)
-        self.snake.drawSnake()
+
 
 c=Jeu((256,256))
-c.initGame()
-c.startGame()
