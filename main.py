@@ -81,11 +81,14 @@ class Fruit:
 class Jeu:
     def __init__(self, dimensions):
         self.dimensions = dimensions
-
+        
     def initGame(self):
         pyxel.init(self.dimensions[0], self.dimensions[1])
         pyxel.load("snake.pyxres")
-        self.snake = snake
+        self.snake =Serpent(LinkedList,Node)
+        self.fruit=Fruit(self.snake)
+
+        
 
     def startGame(self):
         pyxel.run(self.update, self.draw)
@@ -93,33 +96,35 @@ class Jeu:
     def drawWindowPlay(self):
         pyxel.bltm(0,0,0,0,0,256,256)
 
-    def update(self,bodyClass):
+    def update(self):
         if self.detection_collision():
-            self.x_carre=60
-            self.y_carre=60
+            self.snake.body.head.position[0]=60
+            self.snake.body.head.position[1]=60
         
-        self.x_carre,self.y_carre=self.deplacement_carre(self.x_carre,self.y_carre)
+        self.snake.body.head.position=self.deplacement()
 
 
 
     def deplacement(self):
         if pyxel.btn(pyxel.KEY_RIGHT) :
-            
-            self.x_carre += 1
+            if self.snake.body.head.position[0]<120:
+                self.snake.body.head.position[0] += 1
         if pyxel.btn(pyxel.KEY_LEFT) :
-            if self.x>0:
-                self.x_carre += -1
+            if self.snake.body.head.position[0]>0:
+                self.snake.body.head.position[0]+= -1
         if  pyxel.btn(pyxel.KEY_UP):
-            if self.y>0:
-                self.y-=1
+            if self.snake.body.head.position[1]>0:
+                self.snake.body.head.position[1]-=1
         
         if pyxel.btn(pyxel.KEY_DOWN):
-            if self.y<120:
-                self.y+=1
+            if self.snake.body.head.position[0]<120:
+                self.snake.body.head.position[0]+=1
+        x,y=self.snake.body.head.position
+        return x,y
 
     def detection_collision(self):
-        if Fruit.position[0]<self.x_carre<Fruit.position[0]+8:
-            if  Fruit.position[1]<self.y_carre<Fruit.position[1]+8:
+        if self.fruit.position[0]<self.snake.body.head.position[0]<self.fruit.position[0]+8:
+            if  self.fruit.position[1]<self.snake.body.head.position[1]<self.fruit.position[1]+8:
                 return True
           
         return False
@@ -129,6 +134,9 @@ class Jeu:
 
     def draw(self):
         pyxel.cls(0)
-
+        pyxel.rect(self.fruit.position[0],self.fruit.position[1],8,8,9)
+        self.snake.drawSnake()
 
 c=Jeu((256,256))
+c.initGame()
+c.startGame()
