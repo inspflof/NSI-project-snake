@@ -26,29 +26,9 @@ def detection_collision(serpent):
 
 
 
-  
-
-
-    
-
-def update():
-   head_x, head_y = deplacement_carre(*serpent.body.returnPositionList()[0])
-   serpent.body.head.position = (head_x, head_y)
-
-   if detection_collision(serpent):
-      serpent = Serpent(LinkedList, Node)  
-
 
 
        
-
-def draw():
-    pyxel.cls(1)
-    pyxel.rect(x_carre, y_carre, 8, 8, 13)
-    pyxel.rect(0, 125, 160, 3, 5)
-    pyxel.rect(0, 0, 160, 3, 5)
-    pyxel.rect(0, 0, 3, 160, 5)
-    pyxel.rect(125,0,3,160,5)
         
 
 
@@ -266,11 +246,11 @@ class Jeu:
 
         self.snake.updatebodyposition_mypov(self.direction)
     def detection_collision_fruit(self):
-        """
+        
         if self.fruit.position[0]<=self.snake.body.head.position[0]<=self.fruit.position[0]+10:
             if  self.fruit.position[1]<=self.snake.body.head.position[1]<=self.fruit.position[1]+10:
             
-        """  
+         
         if (self.snake.body.head.position[0]< self.fruit.position[0] + 10
              and self.snake.body.head.position[0] + 10 > self.fruit.position[0]
             and self.snake.body.head.position[1]< self.fruit.position[1] + 10 and
