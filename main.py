@@ -106,8 +106,8 @@ class Fruit:
     def randomPos(self, serpent):
         while True:
             pos = (
-                random.randrange(0, 256, 10),
-                random.randrange(0, 256, 10)
+                random.randrange(0, 240, 10),
+                random.randrange(0, 240, 10)
             )
             if pos not in serpent.body.returnPositionList():
                 return pos
@@ -129,13 +129,16 @@ class Jeu:
         self.score = 0
         self.ongoing = True
         self.speed = 2
+    
 
 
     def startGame(self):
         pyxel.run(self.update, self.draw)
 
     def update(self):
-    
+        if pyxel.btn(pyxel.KEY_Q):
+            pyxel.quit()
+
         if not self.ongoing:
             return
         if pyxel.frame_count % self.speed != 0:
