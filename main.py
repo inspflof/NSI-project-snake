@@ -128,19 +128,32 @@ class Jeu:
         self.interdit = {0: 2, 2: 0, 1: 3, 3: 1}
         self.score = 0
         self.ongoing = True
-        self.speed = 2
-    
+        self.speed = 2 
+        self.paused = False
+
+
 
 
     def startGame(self):
         pyxel.run(self.update, self.draw)
 
     def update(self):
+
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            self.paused = not self.paused
+
+        if self.paused:
+            return
+
+
+
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
 
         if not self.ongoing:
             return
+        
+        
         if pyxel.frame_count % self.speed != 0:
             return
 
