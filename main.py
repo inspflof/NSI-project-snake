@@ -166,8 +166,8 @@ class Fruit:
     def randomPos(self, serpent):
         while True:
             pos = (
-                random.randrange(0, 240, 10),
-                random.randrange(0, 240, 10)
+                random.randrange(0, 248, 10),
+                random.randrange(0, 248, 10)
             )
             if pos not in serpent.body.returnPositionList():
                 return pos
