@@ -1,5 +1,6 @@
 import pyxel
 import random
+import time 
 
 width = 256
 height = 256
@@ -170,7 +171,7 @@ class Fruit:
                 random.randrange(8, 248, 8)
             )
             if pos not in serpent.body.returnPositionList():
-                return pos
+               return pos
 
     def respawn(self, serpent):
         self.position = self.randomPos(serpent)
@@ -182,6 +183,7 @@ class Jeu:
     def __init__(self, snake):
         pyxel.init(width, height)
         pyxel.load("snake.pyxres")
+        self.start_time = pyxel.frame_count
         self.snake = snake
         self.fruit = Fruit(snake)
         self.direction = 0
@@ -191,6 +193,7 @@ class Jeu:
         self.ongoing = True
         self.speed = 2 
         self.paused = False
+        
     def load_highscore(self):
         try:
            with open("highscore.txt", "r") as f:
@@ -249,6 +252,18 @@ class Jeu:
         
 
         if self.ongoing:
+            
+            elapsed = pyxel.frame_count - self.start_time
+            if elapsed < 90:
+               pyxel.text(100, 90, "UTILISE LES FLECHES POUR BOUGER", 5)
+
+            elif elapsed < 180:
+               pyxel.text(100, 90, "MANGE LES FRUITS POUR GRANDIR", 10)
+
+            elif elapsed <270:
+                pyxel.text(40,90,"NE TE RENTRE PAS DEDANS ET NE TOUCHE PAS LES MURS!",8)
+            
+
             self.snake.select_snake_tilemap()
             self.snake.drawsnake_bis()
             self.fruit.drawFruit()
@@ -258,6 +273,7 @@ class Jeu:
         else:
             pyxel.text(90, 120, "GAME OVER", 8)
             pyxel.text(75, 140, f"HIGHSCORE : {self.highscore}", 7)
+            
 
 
     def handleInput(self):
