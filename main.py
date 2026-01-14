@@ -187,9 +187,20 @@ class Jeu:
         self.direction = 0
         self.interdit = {0: 2, 2: 0, 1: 3, 3: 1}
         self.score = 0
+        self.highscore = self.load_highscore()
         self.ongoing = True
         self.speed = 2 
         self.paused = False
+    def load_highscore(self):
+        try:
+           with open("highscore.txt", "r") as f:
+             return int(f.read())
+        except:
+            return 0
+        
+    def save_highscore(self):
+       with open("highscore.txt", "w") as f:
+           f.write(str(self.highscore))
 
     def startGame(self):
         pyxel.run(self.update, self.draw)
@@ -216,6 +227,9 @@ class Jeu:
 
         if self.collisionMur() or self.collisionCorps():
             self.ongoing = False
+            if self.score > self.highscore:
+                self.highscore = self.score
+                self.save_highscore()
 
         if self.collisionFruit():
             self.snake.is_eating = True
@@ -238,8 +252,12 @@ class Jeu:
             self.snake.drawsnake_bis()
             self.fruit.drawFruit()
             pyxel.text(5, 5, f"SCORE : {self.score}", 7)
+            pyxel.text(5, 15, f"HIGHSCORE : {self.highscore}", 6)
+
         else:
             pyxel.text(90, 120, "GAME OVER", 8)
+            pyxel.text(75, 140, f"HIGHSCORE : {self.highscore}", 7)
+
 
     def handleInput(self):
         prev = self.direction
