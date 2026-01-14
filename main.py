@@ -4,13 +4,11 @@ import random
 width = 256
 height = 256
 
-
 class Node:
     def __init__(self, position, direction):
         self.next = None
         self.position = position
         self.direction = direction
-
 
 class LinkedList:
     def __init__(self, nodeClass, initPosition=(20, 20), initDirection=0):
@@ -53,7 +51,6 @@ class LinkedList:
             temp = temp.next
         return res
 
-
 class Serpent:
     def __init__(self, bodyClass, nodeClass):
         self.body = bodyClass(nodeClass)
@@ -63,7 +60,7 @@ class Serpent:
     def createSegment(self):
         lastPos = self.body.returnPositionList()[-1]
         lastDir = self.body.returnDirectionList()[-1]
-
+        newPos = None
         match lastDir:
             case 0:
                 newPos = (lastPos[0], lastPos[1] - 8)
@@ -80,6 +77,7 @@ class Serpent:
         self.body.head.direction = direction
 
         x, y = self.body.head.position
+        newPos = None
         match direction:
             case 0:
                 newPos = (x, y + 8)
@@ -99,16 +97,6 @@ class Serpent:
         for x, y in self.body.returnPositionList():
             pyxel.rect(x, y, 10, 10, 13)
     
-
-
-
-
-
-
-
-
-
-
     def select_snake_tilemap(self):
         snakePosition=self.body.returnPositionList()
         self.tilemap_snake=[]
@@ -124,10 +112,7 @@ class Serpent:
                     
             case 3:
                 self.tilemap_snake.append((0,40))
-                
 
-        
-        
         dictionary_turn={((8,0),(0,-8)):(24,16),
                              ((0,8),(-8,0)):(24,16),
 
@@ -150,7 +135,6 @@ class Serpent:
                                  (0,8):(16,16),
                                  (0,-8):(16,16)}
         
-        
         for i in range(1,len(snakePosition)-1):
            
             x_prev,y_prev=snakePosition[i-1]
@@ -162,10 +146,8 @@ class Serpent:
             dy_after=y_curr-y_after
             if (dx_curr,dy_curr)==(dx_after,dy_after):
                 self.tilemap_snake.append(dictionary_body_straight[(dx_curr,dy_curr)])
-            
             else:
                 self.tilemap_snake.append(dictionary_turn[((dx_after,dy_after),(dx_curr,dy_curr))])
-
         self.tilemap_snake.append(dictionary_queue[(dx_after,dy_after)])
 
     def drawsnake_bis(self):
@@ -177,10 +159,6 @@ class Serpent:
     def returntilemap_snake(self):
         return self.tilemap_snake
         
-
-
-        
-
 class Fruit:
     def __init__(self, serpent):
         self.position = self.randomPos(serpent)
@@ -213,9 +191,6 @@ class Jeu:
         self.speed = 2 
         self.paused = False
 
-
-
-
     def startGame(self):
         pyxel.run(self.update, self.draw)
 
@@ -227,15 +202,12 @@ class Jeu:
         if self.paused:
             return
 
-
-
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
 
         if not self.ongoing:
             return
-        
-        
+         
         if pyxel.frame_count % self.speed != 0:
             return
 
@@ -251,10 +223,6 @@ class Jeu:
             self.fruit.respawn(self.snake)
         else:
             self.snake.is_eating = False
-
-
-
-
 
     def draw(self):
         pyxel.cls(0)
@@ -272,7 +240,6 @@ class Jeu:
             pyxel.text(5, 5, f"SCORE : {self.score}", 7)
         else:
             pyxel.text(90, 120, "GAME OVER", 8)
-
 
     def handleInput(self):
         prev = self.direction
@@ -308,10 +275,12 @@ class Jeu:
             hy + 8 > fy
         )
 
+def startGame(serpentClass, gameClass, bodyClass, nodeClass):
+    snake = Serpent(bodyClass, nodeClass)
+    snake.createSegment()
+    snake.createSegment()
 
-snake = Serpent(LinkedList, Node)
-snake.createSegment()
-snake.createSegment()
+    game = gameClass(snake)
+    game.startGame()
 
-game = Jeu(snake)
-game.startGame()
+startGame(Serpent, Jeu, LinkedList, Node)
