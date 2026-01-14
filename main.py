@@ -214,9 +214,6 @@ class Jeu:
         self.speed = 2 
         self.paused = False
 
-
-
-
     def startGame(self):
         pyxel.run(self.update, self.draw)
 
@@ -303,10 +300,12 @@ class Jeu:
             hy + 8 > fy
         )
 
+def startGame(serpentClass, gameClass, bodyClass, nodeClass):
+    snake = Serpent(bodyClass, nodeClass)
+    snake.createSegment()
+    snake.createSegment()
 
-snake = Serpent(LinkedList, Node)
-snake.createSegment()
-snake.createSegment()
+    game = gameClass(snake)
+    game.startGame()
 
-game = Jeu(snake)
-game.startGame()
+startGame(Serpent, Jeu, LinkedList, Node)
