@@ -63,7 +63,7 @@ class Serpent:
     def createSegment(self):
         lastPos = self.body.returnPositionList()[-1]
         lastDir = self.body.returnDirectionList()[-1]
-
+        newPos = None
         match lastDir:
             case 0:
                 newPos = (lastPos[0], lastPos[1] - 8)
@@ -80,6 +80,7 @@ class Serpent:
         self.body.head.direction = direction
 
         x, y = self.body.head.position
+        newPos = None
         match direction:
             case 0:
                 newPos = (x, y + 8)
