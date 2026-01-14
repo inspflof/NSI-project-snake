@@ -273,7 +273,7 @@ class Jeu:
 
     def collisionMur(self):
         x, y = self.snake.body.head.position
-        return x <= 8 or x >= 248 or y <=8  or y >= 248
+        return x <= 8 or x+8 >= 248 or y <=8  or y+8 >= 248
 
     def collisionCorps(self):
         head = self.snake.body.head.position
