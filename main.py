@@ -294,7 +294,7 @@ class Jeu:
         )
 
 def startGame(serpentClass, gameClass, bodyClass, nodeClass):
-    snake = Serpent(bodyClass, nodeClass)
+    snake = serpentClass(bodyClass, nodeClass)
     snake.createSegment()
     snake.createSegment()
 
