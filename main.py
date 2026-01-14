@@ -216,6 +216,9 @@ class Jeu:
         if pyxel.btn(pyxel.KEY_Q):
             pyxel.quit()
 
+        if pyxel.btn(pyxel.KEY_A):
+            self.snake.createSegment()
+
         if not self.ongoing:
             return
          

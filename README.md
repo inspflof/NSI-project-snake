@@ -64,3 +64,7 @@ Amélioration de la lisibilité du code
 Ajout des limites des murs
 
 Correction d'un bug avec le fruit
+
+Ajout du meilleur score
+
+Correction de la fonction de lancement
