@@ -258,6 +258,12 @@ class Jeu:
 
     def draw(self):
         pyxel.cls(0)
+        pyxel.rect(0, 253, 256, 3, 5)
+        pyxel.rect(0, 0, 256, 3, 5)
+        pyxel.rect(0, 0, 3, 256, 5)
+        pyxel.rect(253,0,3,256,5)
+        
+        
 
         if self.ongoing:
             self.snake.select_snake_tilemap()
@@ -285,7 +291,7 @@ class Jeu:
 
     def collisionMur(self):
         x, y = self.snake.body.head.position
-        return x < 0 or x >= width or y < 0 or y >= height
+        return x < 0 or x >= 248 or y < 0 or y >= 248
 
     def collisionCorps(self):
         head = self.snake.body.head.position
