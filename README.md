@@ -1,5 +1,5 @@
 # NSI-project-snake
-10/12 : 
+10/12 :
 Création des classes linkedlist et node
 
 Création de la classe serpent
@@ -15,9 +15,8 @@ Création de la classe jeu
 12/12 :
 Ajout de la classe fruit
 
-17/12
+17/12 :
 Modification de la classe jeu pour que le jeu se lance seul
-
 
 Modification de la methode createSegment pour qu'elle s'adapte au corps du serpent
 
