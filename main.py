@@ -241,10 +241,7 @@ class Jeu:
     def draw(self):
         pyxel.cls(0)
         pyxel.bltm(0,0,0,0,0,256,256,0)
-        pyxel.rect(0, 253, 256, 3, 5)
-        pyxel.rect(0, 0, 256, 3, 5)
-        pyxel.rect(0, 0, 3, 256, 5)
-        pyxel.rect(253,0,3,256,5)
+        
         
         
 
