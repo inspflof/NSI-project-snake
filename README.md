@@ -60,3 +60,7 @@ Correction de variables pouvant ne pas etre définies
 Ajout de la fonction de lancement du jeu
 
 Amélioration de la lisibilité du code
+
+Ajout des limites des murs
+
+Correction d'un bug avec le fruit
