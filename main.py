@@ -135,6 +135,8 @@ class Serpent:
                                  (0,8):(16,16),
                                  (0,-8):(16,16)}
         
+        dx_after = 0
+        dy_after = 0
         for i in range(1,len(snakePosition)-1):
            
             x_prev,y_prev=snakePosition[i-1]
